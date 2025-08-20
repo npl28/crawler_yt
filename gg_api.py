@@ -10,6 +10,8 @@ import threading
 import db.db_adapter as db
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
 
 # ===== CẤU HÌNH =====
 API_KEY = ""   # 🔑 thay bằng API key YouTube Data v3
@@ -315,15 +317,24 @@ def process_audio_job():
     finally:
         conn.close()
 
-    tasks = [(post_id, Path(filename = os.path.join(AUDIO_DIR, f"{post_id}.mp3"))) for post_id in rows]
-
-    if not tasks:
-        logging.info("✅ Không có audio mới.")
+    if not rows:
+        logging.info("✅ Không có audio mới để xử lý.")
         return
 
-    max_workers = min(len(tasks), cpu_count())
-    with Pool(processes=max_workers) as pool:
-        pool.starmap(process_audio_file, tasks)
+    for row in rows:
+        post_id = row[0]
+        audio_file = os.path.join(AUDIO_DIR, f"{post_id}.mp3")
+        process_audio_file(post_id, Path(audio_file))
+
+    # tasks = [(post_id, Path(filename = os.path.join(AUDIO_DIR, f"{post_id}.mp3"))) for post_id in rows]
+
+    # if not tasks:
+    #     logging.info("✅ Không có audio mới.")
+    #     return
+
+    # max_workers = min(len(tasks), cpu_count())
+    # with Pool(processes=max_workers) as pool:
+    #     pool.starmap(process_audio_file, tasks)
 
     # # Sau khi xử lý xong, update trạng thái
     # conn = db.get_connection()
@@ -334,7 +345,40 @@ def process_audio_job():
     # conn.close()
                    
 if __name__ == "__main__":
-    fetch_and_download_audio()
+    # process_audio_job()  # Lấy video mới nhất và tải audio
+    scheduler = BackgroundScheduler()
+
+    # Job 1: mỗi 4 giờ (0, 4, 8, 12, 16, 20)
+    scheduler.add_job(
+        fetch_and_download_audio,
+        "cron",
+        hour="0,4,8,12,16,20",
+        id="fetch_job",
+        max_instances=1,
+        coalesce=True,
+        misfire_grace_time=0
+    )
+    # Job 2: mỗi giờ
+    scheduler.add_job(
+        process_audio_job,
+        "interval",
+        hours=1,
+        id="process_job",
+        max_instances=1,        # chỉ cho phép 1 job chạy
+        coalesce=True,          # không chạy bù nếu lỡ
+        misfire_grace_time=0    # nếu lỡ giờ thì bỏ qua
+    )
+    # Start scheduler
+    scheduler.start()
+
+    print("✅ Scheduler đã khởi động. Nhấn Ctrl+C để dừng.")
+
+    try:
+        while True:
+            time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
+        print("🛑 Scheduler đã dừng.")
 # pyinstaller --onefile --add-data "C:\Users\PC\AppData\Local\Programs\Python\Python311\Lib\site-packages\whisper\assets;whisper/assets" gg_api.py
 # pyinstaller --onefile --exclude-module torch --exclude-module torchvision --exclude-module torchaudio --add-data "C:\Users\PC\AppData\Local\Programs\Python\Python311\Lib\site-packages\whisper\assets;whisper/assets" gg_api.py
 
