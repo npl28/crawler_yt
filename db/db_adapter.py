@@ -234,14 +234,18 @@ def validate_yt_post(post_name, post_url):
     )
     return not post_data
 
-def insert_yt_post(post_id, post_name, post_url, post_content):
+def insert_yt_post(post_id, post_name, post_url, post_content, post_at):
     # if validate_yt_post(post_name, post_url):
     ok = insert_query(
-        "INSERT INTO yt_post (post_id, post_name, post_url, post_content) "
-        "VALUES (%s, %s, %s, %s)",
-        (post_id, post_name, post_url, post_content)
+        "INSERT INTO yt_post (post_id, post_name, post_url, post_content, post_at) "
+        "VALUES (%s, %s, %s, %s, %s)",
+        (post_id, post_name, post_url, post_content, post_at)
     )
     return ok
-    # else:
-    #     print(f"❌ yt_post đã tồn tại: {post_name} - {post_url}")
-    #     return False
+
+def update_yt_post_content(post_id, post_content):
+    return update_query(
+        "UPDATE yt_post SET post_content = %s, post_processed = TRUE WHERE post_id = %s",
+        (post_content, post_id)
+    )
+

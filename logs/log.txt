@@ -1,0 +1,173 @@
+2025-08-20 09:12:58 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 09:12:58 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:12:59 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 09:12:59 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:12:59 [INFO] ✅ Video hợp lệ: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025 (73.0 giây), đăng lúc 2025-08-20 00:29:59
+2025-08-20 09:13:00 [INFO] 📺 Video mới nhất tubrieLwqkg: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025
+2025-08-20 09:13:00 [INFO] 🔗 Link: https://www.youtube.com/watch?v=tubrieLwqkg
+2025-08-20 09:13:00 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 09:13:00 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 09:13:06 [INFO] ✅ Đã tải: downloads\audio\Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới ｜ Bản tin Chứng khoán 20⧸08⧸2025.mp3
+2025-08-20 09:13:06 [INFO] ⏳ Đang load mô hình Whisper...
+2025-08-20 09:13:06 [INFO] 🖥️ Đang chạy trên: CPU
+2025-08-20 09:13:18 [INFO] 🎙️ Đang nhận diện giọng nói...
+2025-08-20 09:16:22 [INFO] ===== NỘI DUNG VIDEO =====
+2025-08-20 09:16:22 [INFO]  Đầu mới sáng, bắt sáng cơm nhà tin chương khoán ngày 20 tháng 8 năm 2025. Chương khoán Mỹ, chỉ số SP500 giảm điểm trong phiên đau dịch ngày thứ 3 khi chịu áp lực tự đả giảm mạnh của nhóm cục phiếu công nghệ và cục phiếu Nvidia. Kết phiên, chỉ số SP500 giảm 0,59%, nát đát giảm 1,46% trong khi đau dôn tăng hơn 10 điểm, tương đương mức tăng 0,02%. Chương khoán Việt Nam, nhóm cục phiếu ngân hàng dẫn sóng cùng dòng tiền lan tỏa tới các nhóm cục phiếu chương khoán bất động giảm, giúp thị trường có phiên đau dịch đầy khởi sắc. Kết phiên ngày 19 tháng 8, VNNX tăng gần 18 điểm lên 1.654,2 điểm. Thành khoản tiếp tục tuy chỉ ở mức cao với giá trị giáo dịch trên hô xê đạt hơn 54.400 tỷ đồng. Giao dịch khối ngoại tiếp tục là điểm trừ khi tiếp đảm án ròng mạnh gần 1.500 tỷ đồng trong phiên. Tiên doanh nghiệp, ngày 19 tháng 8, hóa phát khởi công dự án khu công nghiệp Hòa Tâm và Cảng Bái Dốc tại tỉnh Đắc Lắc có tổng mốc đầu tư khoảng 28.000 tỷ đồng khởi đầu thu vật hình thành khu liên hợp căng kép công suất dự kiến 6 triệu tấn trên năm. Cũng trong ngày 19 tháng 8, nông nghiệp BAF VN khởi công dự án trại ra hơn tại Quảng Trị với tổng vốn đầu tư lên tới gần 2.400 tỷ đồng, quy mô lớn nhất Việt Nam. Khi hoạt động hết công suất, dự kiến sẽ mang lại tranh tu hơn 3.000 tỷ đồng mỗi năm. Phu tài, mã PTP, trình Cổ Đông phương án trào bán hơn 13 triệu cục phiếu cho Cổ Đông hiện hữu tỷ lệ 20% với giá 12.000 đồng trên 1 cục phiếu dự kiến triển khai trong năm 2026. Liên hệ ngay số điện thoại trong 1 chat để được tư vấn và đồng hành trên hành trình đầu tư trong khoán.
+2025-08-20 09:16:22 [INFO] ✅ Đã lưu nội dung video vào cơ sở dữ liệu.
+2025-08-20 09:16:22 [INFO] 💾 Đã lưu transcript vào: downloads/transcripts\Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới ｜ Bản tin Chứng khoán 20⧸08⧸2025.txt
+2025-08-20 09:16:22 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:16:23 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 09:46:00 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 09:46:00 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:46:01 [INFO] ✅ Video hợp lệ: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025 (73.0 giây), đăng lúc 2025-08-20 00:29:59
+2025-08-20 09:46:01 [INFO] 📺 Video mới nhất tubrieLwqkg: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025
+2025-08-20 09:46:01 [INFO] 🔗 Link: https://www.youtube.com/watch?v=tubrieLwqkg
+2025-08-20 09:46:01 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 09:46:01 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 09:46:06 [ERROR] ❌ Lỗi khi tải audio: [0;31mERROR:[0m [youtube] tubrieLwqkg: Requested format is not available. Use --list-formats for a list of available formats
+2025-08-20 09:46:06 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:46:07 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 09:46:07 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 09:46:09 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 10:02:22 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 10:02:22 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 10:02:23 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 10:02:23 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 10:02:24 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 10:02:24 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 10:02:25 [INFO] ✅ Video hợp lệ: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025 (73.0 giây), đăng lúc 2025-08-20 00:29:59
+2025-08-20 10:02:25 [INFO] 📺 Video mới nhất tubrieLwqkg: Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới | Bản tin Chứng khoán 20/08/2025
+2025-08-20 10:02:25 [INFO] 🔗 Link: https://www.youtube.com/watch?v=tubrieLwqkg
+2025-08-20 10:02:25 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 10:02:25 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 10:02:31 [INFO] ✅ Đã tải: downloads\audio\Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới ｜ Bản tin Chứng khoán 20⧸08⧸2025.mp3
+2025-08-20 10:02:31 [INFO] ⏳ Đang load mô hình Whisper...
+2025-08-20 10:02:31 [INFO] 🖥️ Đang chạy trên: CPU
+2025-08-20 10:02:44 [INFO] 🎙️ Đang nhận diện giọng nói...
+2025-08-20 10:05:30 [INFO] ===== NỘI DUNG VIDEO =====
+2025-08-20 10:05:30 [INFO]  Đầu mới sáng, bắt sáng cơm nhà tin chương khoán ngày 20 tháng 8 năm 2025. Chương khoán Mỹ, chỉ số SP500 giảm điểm trong phiên đau dịch ngày thứ 3 khi chịu áp lực tự đả giảm mạnh của nhóm cục phiếu công nghệ và cục phiếu Nvidia. Kết phiên, chỉ số SP500 giảm 0,59%, nát đát giảm 1,46% trong khi đau dôn tăng hơn 10 điểm, tương đương mức tăng 0,02%. Chương khoán Việt Nam, nhóm cục phiếu ngân hàng dẫn sóng cùng dòng tiền lan tỏa tới các nhóm cục phiếu chương khoán bất động giảm, giúp thị trường có phiên đau dịch đầy khởi sắc. Kết phiên ngày 19 tháng 8, VNNX tăng gần 18 điểm lên 1.654,2 điểm. Thành khoản tiếp tục tuy chỉ ở mức cao với giá trị giáo dịch trên hô xê đạt hơn 54.400 tỷ đồng. Giao dịch khối ngoại tiếp tục là điểm trừ khi tiếp đảm án ròng mạnh gần 1.500 tỷ đồng trong phiên. Tiên doanh nghiệp, ngày 19 tháng 8, hóa phát khởi công dự án khu công nghiệp Hòa Tâm và Cảng Bái Dốc tại tỉnh Đắc Lắc có tổng mốc đầu tư khoảng 28.000 tỷ đồng khởi đầu thu vật hình thành khu liên hợp căng kép công suất dự kiến 6 triệu tấn trên năm. Cũng trong ngày 19 tháng 8, nông nghiệp BAF VN khởi công dự án trại ra hơn tại Quảng Trị với tổng vốn đầu tư lên tới gần 2.400 tỷ đồng, quy mô lớn nhất Việt Nam. Khi hoạt động hết công suất, dự kiến sẽ mang lại tranh tu hơn 3.000 tỷ đồng mỗi năm. Phu tài, mã PTP, trình Cổ Đông phương án trào bán hơn 13 triệu cục phiếu cho Cổ Đông hiện hữu tỷ lệ 20% với giá 12.000 đồng trên 1 cục phiếu dự kiến triển khai trong năm 2026. Liên hệ ngay số điện thoại trong 1 chat để được tư vấn và đồng hành trên hành trình đầu tư trong khoán.
+2025-08-20 10:05:31 [INFO] ✅ Đã lưu nội dung video vào cơ sở dữ liệu.
+2025-08-20 10:05:31 [INFO] 💾 Đã lưu transcript vào: downloads/transcripts\Cổ phiếu ngân hàng khởi sắc, VNINDEX lập đỉnh lịch sử mới ｜ Bản tin Chứng khoán 20⧸08⧸2025_1.txt
+2025-08-20 15:09:13 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:09:14 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:09:14 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:09:14 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:09:15 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:09:15 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:09:16 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:11:54 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:11:54 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:11:55 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:11:55 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:11:56 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:11:56 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:11:57 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:14:41 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:14:41 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:14:42 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:14:42 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:14:43 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:14:43 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:14:44 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:16:30 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:16:30 [INFO] 🔗 Nhóm: Chứng Khoán Ông Toàn Vlog_UC7ynIgCzOnZWplqTFVozF8g
+2025-08-20 15:16:30 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:16:32 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:16:32 [INFO] 🔗 Nhóm: Ichimoku Trịnh Phát_UCeCUvXYMbKs0BjOIRaIdDjw
+2025-08-20 15:16:32 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:16:33 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:16:33 [INFO] 🔗 Nhóm: Ngọc Yakult
+_UCJGTdH2JSTExDqU2vVVWuGQ
+2025-08-20 15:16:33 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:16:34 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:29:34 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:29:34 [INFO] 🔗 Nhóm: Ichimoku Trịnh Phát_UCeCUvXYMbKs0BjOIRaIdDjw
+2025-08-20 15:29:35 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:29:36 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:29:36 [INFO] 🔗 Nhóm: Ngọc Yakult
+_UCJGTdH2JSTExDqU2vVVWuGQ
+2025-08-20 15:29:36 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:29:36 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:29:36 [INFO] 🔗 Nhóm: Chứng Khoán Ông Toàn Vlog_UC7ynIgCzOnZWplqTFVozF8g
+2025-08-20 15:29:36 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:29:37 [WARNING] ❌ Không tìm thấy video.
+2025-08-20 15:29:56 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:29:56 [INFO] 🔗 Nhóm: Ichimoku Trịnh Phát_UCeCUvXYMbKs0BjOIRaIdDjw
+2025-08-20 15:29:56 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:29:57 [INFO] ✅ Video hợp lệ: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH! (681.0 giây), đăng lúc 2025-08-20 08:25:04
+2025-08-20 15:29:57 [INFO] ✅ Video hợp lệ: -20 Điểm Trước Đáo Hạn: Ai Đang Ép Chỉ Số? (6776.0 giây), đăng lúc 2025-08-20 07:59:50
+2025-08-20 15:29:57 [INFO] ✅ Video hợp lệ: Nhà Đầu Tư Cá Nhân Dẫn Sóng – Thị Trường Có Bền Không? (10811.0 giây), đăng lúc 2025-08-20 07:53:36
+2025-08-20 15:29:57 [INFO] ✅ Video hợp lệ: Chứng khoán hôm nay: Top Cổ Phiếu Có Điểm Gom Đẹp! | Đừng bỏ lỡ! (4913.0 giây), đăng lúc 2025-08-20 06:03:23
+2025-08-20 15:29:57 [INFO] 📺 Video mới nhất s0zcBq9U01U: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH!
+2025-08-20 15:29:58 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 15:29:58 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 15:54:28 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 15:54:28 [INFO] 🔗 Nhóm: Ichimoku Trịnh Phát_UCeCUvXYMbKs0BjOIRaIdDjw
+2025-08-20 15:54:28 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:54:29 [INFO] ✅ Video hợp lệ: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH! (681.0 giây), đăng lúc 2025-08-20 08:25:04
+2025-08-20 15:54:29 [INFO] ✅ Video hợp lệ: -20 Điểm Trước Đáo Hạn: Ai Đang Ép Chỉ Số? (6776.0 giây), đăng lúc 2025-08-20 07:59:50
+2025-08-20 15:54:29 [INFO] ✅ Video hợp lệ: Nhà Đầu Tư Cá Nhân Dẫn Sóng – Thị Trường Có Bền Không? (10811.0 giây), đăng lúc 2025-08-20 07:53:36
+2025-08-20 15:54:29 [INFO] ✅ Video hợp lệ: Chứng khoán hôm nay: Top Cổ Phiếu Có Điểm Gom Đẹp! | Đừng bỏ lỡ! (4913.0 giây), đăng lúc 2025-08-20 06:03:23
+2025-08-20 15:54:29 [INFO] 📺 Video mới nhất s0zcBq9U01U: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH!
+2025-08-20 15:54:29 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 15:54:29 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 15:54:48 [INFO] ✅ Đã tải: downloads/audio\yt_thinhphat_s0zcBq9U01U.mp3
+2025-08-20 15:54:48 [INFO] 💾 Đã lưu audio: downloads/audio\yt_thinhphat_s0zcBq9U01U.mp3
+2025-08-20 15:54:48 [INFO] ✅ Đã lưu metadata video vào cơ sở dữ liệu.
+2025-08-20 15:54:48 [INFO] 🔗 Nhóm: Ngọc Yakult
+_UCJGTdH2JSTExDqU2vVVWuGQ
+2025-08-20 15:54:48 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:54:49 [INFO] ✅ Video hợp lệ: 3 CỔ BANK SẮP CHẠY NƯỚC RÚT | Nhận định 19/08/2025 (2735.0 giây), đăng lúc 2025-08-19 14:09:06
+2025-08-20 15:54:49 [INFO] ✅ Video hợp lệ: SIÊU CỔ BANK CHẠY NƯỚC RÚT SANG TUẦN | Nhận định 17/08/2025 (2149.0 giây), đăng lúc 2025-08-17 13:09:06
+2025-08-20 15:54:49 [INFO] ✅ Video hợp lệ: 1 SIÊU CỔ PHIẾU MAI TĂNG TRẦN | Nhận định 14/08/2025 (1530.0 giây), đăng lúc 2025-08-14 13:50:06
+2025-08-20 15:54:49 [INFO] ✅ Video hợp lệ: CẢNH BÁO: BẠN SẼ MẤT HÀNG VÌ LÍ DO NÀY| Nhận định 13/08/2025 (1870.0 giây), đăng lúc 2025-08-13 13:59:06
+2025-08-20 15:54:49 [INFO] ✅ Video hợp lệ: 1 NHÓM NGÀNH SẼ TĂNG NÓNG SAU BANK CHỨNG | Nhận định 08/08/2025 (1999.0 giây), đăng lúc 2025-08-07 14:29:06
+2025-08-20 15:54:49 [INFO] 📺 Video mới nhất kcaHPtBwHDM: 3 CỔ BANK SẮP CHẠY NƯỚC RÚT | Nhận định 19/08/2025
+2025-08-20 15:54:49 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 15:54:49 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 15:54:51 [ERROR] ❌ Lỗi khi tải audio: [0;31mERROR:[0m [youtube] kcaHPtBwHDM: Requested format is not available. Use --list-formats for a list of available formats
+2025-08-20 15:54:51 [INFO] 🔗 Nhóm: Chứng Khoán Ông Toàn Vlog_UC7ynIgCzOnZWplqTFVozF8g
+2025-08-20 15:54:51 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 15:54:52 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỦNG CHỐT CHẶN VÀ NGHỊCH LÝ (1765.0 giây), đăng lúc 2025-08-19 09:36:50
+2025-08-20 15:54:52 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: HỎI ĐÁP CỔ PHIẾU - VÙNG PHÂN HÓA (6871.0 giây), đăng lúc 2025-08-17 15:21:45
+2025-08-20 15:54:52 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: CHỐT CHẶN CUỐI CÙNG, ĐẶT CƯỢC LỚN (6370.0 giây), đăng lúc 2025-08-15 16:51:22
+2025-08-20 15:54:52 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: CP LIÊN TỤC HOÀN THÀNH MÔ HÌNH (2540.0 giây), đăng lúc 2025-08-13 10:27:24
+2025-08-20 15:54:52 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỊ TRƯỜNG ĐẢO PHA, NGÀNH ĐƯỢC CHỌN (1980.0 giây), đăng lúc 2025-08-06 09:48:06
+2025-08-20 15:54:52 [INFO] 📺 Video mới nhất kt1A_bBJUMc: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỦNG CHỐT CHẶN VÀ NGHỊCH LÝ
+2025-08-20 15:54:52 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 15:54:52 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 15:55:42 [INFO] ✅ Đã tải: downloads/audio\yt_ongtoan_kt1A_bBJUMc.mp3
+2025-08-20 15:55:42 [INFO] 💾 Đã lưu audio: downloads/audio\yt_ongtoan_kt1A_bBJUMc.mp3
+2025-08-20 15:55:42 [INFO] ✅ Đã lưu metadata video vào cơ sở dữ liệu.
+2025-08-20 16:06:19 [INFO] 🔍 Đang tìm video mới nhất...
+2025-08-20 16:06:19 [INFO] 🔗 Nhóm: Ngọc Yakult
+_UCJGTdH2JSTExDqU2vVVWuGQ
+2025-08-20 16:06:19 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 16:06:20 [INFO] ✅ Video hợp lệ: 3 CỔ BANK SẮP CHẠY NƯỚC RÚT | Nhận định 19/08/2025 (2735.0 giây), đăng lúc 2025-08-19 14:09:06
+2025-08-20 16:06:20 [INFO] ✅ Video hợp lệ: SIÊU CỔ BANK CHẠY NƯỚC RÚT SANG TUẦN | Nhận định 17/08/2025 (2149.0 giây), đăng lúc 2025-08-17 13:09:06
+2025-08-20 16:06:20 [INFO] ✅ Video hợp lệ: 1 SIÊU CỔ PHIẾU MAI TĂNG TRẦN | Nhận định 14/08/2025 (1530.0 giây), đăng lúc 2025-08-14 13:50:06
+2025-08-20 16:06:20 [INFO] ✅ Video hợp lệ: CẢNH BÁO: BẠN SẼ MẤT HÀNG VÌ LÍ DO NÀY| Nhận định 13/08/2025 (1870.0 giây), đăng lúc 2025-08-13 13:59:06
+2025-08-20 16:06:20 [INFO] ✅ Video hợp lệ: 1 NHÓM NGÀNH SẼ TĂNG NÓNG SAU BANK CHỨNG | Nhận định 08/08/2025 (1999.0 giây), đăng lúc 2025-08-07 14:29:06
+2025-08-20 16:06:20 [INFO] 📺 Video mới nhất kcaHPtBwHDM: 3 CỔ BANK SẮP CHẠY NƯỚC RÚT | Nhận định 19/08/2025
+2025-08-20 16:06:20 [INFO] ✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...
+2025-08-20 16:06:20 [INFO] ⬇️ Đang tải audio (mp3)...
+2025-08-20 16:07:17 [INFO] ✅ Đã tải: downloads/audio\yt_ngocyakult_kcaHPtBwHDM.mp3
+2025-08-20 16:07:17 [INFO] 💾 Đã lưu audio: downloads/audio\yt_ngocyakult_kcaHPtBwHDM.mp3
+2025-08-20 16:07:17 [INFO] ✅ Đã lưu metadata video vào cơ sở dữ liệu.
+2025-08-20 16:07:17 [INFO] 🔗 Nhóm: Ichimoku Trịnh Phát_UCeCUvXYMbKs0BjOIRaIdDjw
+2025-08-20 16:07:17 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 16:07:18 [INFO] ✅ Video hợp lệ: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH! (681.0 giây), đăng lúc 2025-08-20 08:25:04
+2025-08-20 16:07:18 [INFO] ✅ Video hợp lệ: -20 Điểm Trước Đáo Hạn: Ai Đang Ép Chỉ Số? (6776.0 giây), đăng lúc 2025-08-20 07:59:50
+2025-08-20 16:07:18 [INFO] ✅ Video hợp lệ: Nhà Đầu Tư Cá Nhân Dẫn Sóng – Thị Trường Có Bền Không? (10811.0 giây), đăng lúc 2025-08-20 07:53:36
+2025-08-20 16:07:18 [INFO] ✅ Video hợp lệ: Chứng khoán hôm nay: Top Cổ Phiếu Có Điểm Gom Đẹp! | Đừng bỏ lỡ! (4913.0 giây), đăng lúc 2025-08-20 06:03:23
+2025-08-20 16:07:18 [INFO] 📺 Video mới nhất s0zcBq9U01U: CHÚ Ý: MUA GẤP SIÊU CỔ NÀY TĂNG MẠNH SAU ĐÁO HẠN PHÁI SINH!
+2025-08-20 16:07:18 [WARNING] ⚠️ Đã tồn tại trong DB, bỏ qua.
+2025-08-20 16:07:18 [INFO] 🔗 Nhóm: Chứng Khoán Ông Toàn Vlog_UC7ynIgCzOnZWplqTFVozF8g
+2025-08-20 16:07:18 [INFO] file_cache is only supported with oauth2client<4.0.0
+2025-08-20 16:07:18 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỦNG CHỐT CHẶN VÀ NGHỊCH LÝ (1765.0 giây), đăng lúc 2025-08-19 09:36:50
+2025-08-20 16:07:19 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: HỎI ĐÁP CỔ PHIẾU - VÙNG PHÂN HÓA (6871.0 giây), đăng lúc 2025-08-17 15:21:45
+2025-08-20 16:07:19 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: CHỐT CHẶN CUỐI CÙNG, ĐẶT CƯỢC LỚN (6370.0 giây), đăng lúc 2025-08-15 16:51:22
+2025-08-20 16:07:19 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: CP LIÊN TỤC HOÀN THÀNH MÔ HÌNH (2540.0 giây), đăng lúc 2025-08-13 10:27:24
+2025-08-20 16:07:19 [INFO] ✅ Video hợp lệ: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỊ TRƯỜNG ĐẢO PHA, NGÀNH ĐƯỢC CHỌN (1980.0 giây), đăng lúc 2025-08-06 09:48:06
+2025-08-20 16:07:19 [INFO] 📺 Video mới nhất kt1A_bBJUMc: ĐẦU TƯ CHỨNG KHOÁN | Chứng khoán hôm nay | Nhận định thị trường: THỦNG CHỐT CHẶN VÀ NGHỊCH LÝ
+2025-08-20 16:07:19 [WARNING] ⚠️ Đã tồn tại trong DB, bỏ qua.
