@@ -12,6 +12,9 @@ from multiprocessing import Pool, cpu_count
 from pathlib import Path
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
+import argparse
+import tiktok_whisper_latest as tiktok
+import random
 
 # ===== CẤU HÌNH =====
 API_KEY = ""   # 🔑 thay bằng API key YouTube Data v3
@@ -301,6 +304,16 @@ def fetch_and_download_audio():
             # Ghi metadata vào DB để Job 2 xử lý
             if db.insert_yt_post(video_id, latest['title'], latest['url'], "", latest['published_at']):
                 logging.info("✅ Đã lưu metadata video vào cơ sở dữ liệu.")
+        time.sleep(random.randint(5,15))
+    # Sau khi xong thì add Job get last tiktok video ngay
+    print("➡️ Job1 hoàn tất, thêm Job get last tiktok video vào lịch")
+    scheduler.add_job(
+        fectch_download_audio_tiktok,
+        "date",   # chỉ chạy 1 lần
+        run_date=datetime.now(),  # chạy ngay lập tức
+        id="job3_once",
+        replace_existing=True
+    )
 
 
 def process_audio_job():
@@ -343,6 +356,72 @@ def process_audio_job():
     #         cursor.execute("UPDATE pending_audio SET processed = true WHERE yt_id = %s AND yt_video_id = %s", (yt_id, yt_video_id))
     #     conn.commit()
     # conn.close()
+
+def fectch_download_audio_tiktok():
+
+    logging.info("🔍 Đang tìm tiktok video mới nhất...")
+    conn = db.get_connection()
+    if conn is None:
+        logging.error("❌ Không thể kết nối DB")
+        return
+
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT tt_id, tt_link, tt_name FROM tt_group ORDER BY RANDOM()")
+            rows = cursor.fetchall()
+            data_list = list(rows)
+    finally:
+        conn.close()
+
+    for id, link, name in data_list:
+        logging.info(f"🔗 Nhóm: {id}/{name}_{link}")
+
+        user_name = link  # Thay thế bằng tên kênh TikTok bạn muốn
+        cookies_file = None  # Thay thế bằng đường dẫn cookies.txt nếu cần
+        model_size = "medium"  # Kích thước mô hình Whisper
+        language = 'vi'  # Ngôn ngữ, để trống để tự động    
+        outdir = "downloads/audio"  # Thư mục tải audio
+        transdir = "downloads/transcripts"  # Thư mục lưu transcript
+        args = argparse.Namespace(
+            username=user_name,
+            cookies=cookies_file,
+            model=model_size,
+            lang=language,
+            outdir=outdir,
+            transdir=transdir
+        )
+
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Lấy video mới nhất của @{args.username} ...")
+        latest_entry = tiktok.get_latest_tiktok_video_entry(args.username)
+
+        # Cố gắng lấy URL video.
+        video_url = latest_entry.get("url") or latest_entry.get("webpage_url") or latest_entry.get("original_url")
+        if not video_url:
+            # Trong extract_flat, TikTok đôi khi trả về 'id' thay vì URL đầy đủ
+            vid_id = latest_entry.get("id")
+            if vid_id:
+                video_url = f"https://www.tiktok.com/@{args.username}/video/{vid_id}"
+            else:
+                raise RuntimeError("Không xác định được URL video mới nhất.")
+
+        ts = latest_entry.get("timestamp")
+        ts_str = datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S") if ts else "N/A"
+        logging.info(f"Video mới nhất: {video_url}\nThời gian đăng: {ts_str}")
+
+        if not db.validate_yt_post(latest_entry['title'], video_url):
+            logging.warning("⚠️ Đã tồn tại trong DB, bỏ qua.")
+            continue
+
+        logging.info("\n[Tải audio bằng yt-dlp] ...")
+        video_id = f"t_{args.username}_{video_url.rstrip('/').split('/')[-1]}"
+        audio_path = tiktok.download_best_audio(video_url, outdir=args.outdir, vid_id=video_id)
+        if audio_path:
+            logging.info(f"💾 Đã lưu audio: {audio_path}")
+            # Ghi metadata vào DB để Job 2 xử lý
+            if db.insert_yt_post(video_id, latest_entry['title'], video_url, "", ts_str):
+                logging.info("✅ Đã lưu metadata video vào cơ sở dữ liệu.")
+        time.sleep(random.randint(5,15))
+
                    
 if __name__ == "__main__":
     # process_audio_job()  # Lấy video mới nhất và tải audio
@@ -356,7 +435,7 @@ if __name__ == "__main__":
         id="fetch_job",
         max_instances=1,
         coalesce=True,
-        misfire_grace_time=0
+        misfire_grace_time=1
     )
     # Job 2: mỗi giờ
     scheduler.add_job(
@@ -366,7 +445,7 @@ if __name__ == "__main__":
         id="process_job",
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
-        misfire_grace_time=0    # nếu lỡ giờ thì bỏ qua
+        misfire_grace_time=1    # nếu lỡ giờ thì bỏ qua
     )
     # Start scheduler
     scheduler.start()
