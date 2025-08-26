@@ -15,6 +15,7 @@ import time
 import argparse
 import tiktok_whisper_latest as tiktok
 import random
+from multiprocessing import Process
 
 # ===== CẤU HÌNH =====
 API_KEY = ""   # 🔑 thay bằng API key YouTube Data v3
@@ -132,10 +133,10 @@ def download_audio(video_url, dir, video_id):
 
 def transcribe_audio(file_path):
     logging.info("⏳ Đang load mô hình Whisper...")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
     logging.info(f"🖥️ Đang chạy trên: {device.upper()}")
-    
-    model = whisper.load_model("medium").to(device)
+    logging.info(torch.cuda.get_device_name(torch.device(device)))
+    model = whisper.load_model("large").to(device)
     logging.info("🎙️ Đang nhận diện giọng nói...")
     
     result = model.transcribe(file_path, language="vi")
@@ -316,28 +317,28 @@ def fetch_and_download_audio():
     )
 
 
-def process_audio_job():
-    logging.info("🎶 Đang tìm audio chưa xử lý...")
-    conn = db.get_connection()
-    if conn is None:
-        logging.error("❌ Không thể kết nối DB")
-        return
+# def process_audio_job():
+#     logging.info("🎶 Đang tìm audio chưa xử lý...")
+#     conn = db.get_connection()
+#     if conn is None:
+#         logging.error("❌ Không thể kết nối DB")
+#         return
 
-    try:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT post_id FROM yt_post WHERE post_processed = false")
-            rows = cursor.fetchall()
-    finally:
-        conn.close()
+#     try:
+#         with conn.cursor() as cursor:
+#             cursor.execute("SELECT post_id FROM yt_post WHERE post_processed = false")
+#             rows = cursor.fetchall()
+#     finally:
+#         conn.close()
 
-    if not rows:
-        logging.info("✅ Không có audio mới để xử lý.")
-        return
+#     if not rows:
+#         logging.info("✅ Không có audio mới để xử lý.")
+#         return
 
-    for row in rows:
-        post_id = row[0]
-        audio_file = os.path.join(AUDIO_DIR, f"{post_id}.mp3")
-        process_audio_file(post_id, Path(audio_file))
+#     for row in rows:
+#         post_id = row[0]
+#         audio_file = os.path.join(AUDIO_DIR, f"{post_id}.mp3")
+#         process_audio_file(post_id, Path(audio_file))
 
     # tasks = [(post_id, Path(filename = os.path.join(AUDIO_DIR, f"{post_id}.mp3"))) for post_id in rows]
 
@@ -356,6 +357,74 @@ def process_audio_job():
     #         cursor.execute("UPDATE pending_audio SET processed = true WHERE yt_id = %s AND yt_video_id = %s", (yt_id, yt_video_id))
     #     conn.commit()
     # conn.close()
+
+def worker(gpu_id, tasks):
+    # Gán GPU cho process này
+    os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+
+    # Load model Whisper 1 lần trên GPU đó
+    logging.info(f"[GPU {gpu_id}] Load model Whisper...")
+    model = whisper.load_model("large").to("cuda")
+
+    for post_id, audio_file in tasks:
+        logging.info(f"[GPU {gpu_id}] Đang xử lý {audio_file}")
+        try:
+            result = model.transcribe(str(audio_file))
+            text = result["text"]
+
+            # Lưu kết quả ra file txt (hoặc update DB)
+            out_file = Path(audio_file).with_suffix(".txt")
+            with open(out_file, "w", encoding="utf-8") as f:
+                f.write(text)
+
+            logging.info(f"[GPU {gpu_id}] ✅ Xong {post_id}, lưu {out_file}")
+
+            # TODO: update DB post_processed = true
+            # update_post_processed(post_id)
+
+        except Exception as e:
+            logging.error(f"[GPU {gpu_id}] ❌ Lỗi {post_id}: {e}")
+
+def process_audio_job():
+    logging.info("🎶 Đang tìm audio chưa xử lý...")
+
+    conn = db.get_connection()
+    if conn is None:
+        logging.error("❌ Không thể kết nối DB")
+        return
+
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT post_id FROM yt_post WHERE post_processed = false")
+            rows = cursor.fetchall()
+    finally:
+        conn.close()
+
+    if not rows:
+        logging.info("✅ Không có audio mới để xử lý.")
+        return
+
+    # Chuẩn bị list (post_id, file_path)
+    tasks = []
+    for row in rows:
+        post_id = row[0]
+        audio_file = os.path.join(AUDIO_DIR, f"{post_id}.mp3")
+        tasks.append((post_id, Path(audio_file)))
+
+    # Chia xen kẽ cho 2 GPU
+    tasks_gpu0 = tasks[0::2]
+    tasks_gpu1 = tasks[1::2]
+
+    # Tạo 2 process song song
+    p0 = Process(target=worker, args=(0, tasks_gpu0))
+    p1 = Process(target=worker, args=(1, tasks_gpu1))
+
+    p0.start()
+    p1.start()
+    p0.join()
+    p1.join()
+
+    logging.info("🎉 Hoàn tất xử lý tất cả audio chưa xử lý.")
 
 def fectch_download_audio_tiktok():
 
@@ -431,7 +500,7 @@ if __name__ == "__main__":
     scheduler.add_job(
         fetch_and_download_audio,
         "cron",
-        hour="0,4,8,12,16,20",
+        hour="0,4,6,8,10,12,14,16,18,20,22",
         id="fetch_job",
         max_instances=1,
         coalesce=True,
@@ -446,6 +515,7 @@ if __name__ == "__main__":
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
         misfire_grace_time=1    # nếu lỡ giờ thì bỏ qua
+        next_run_time=datetime.now() #cho chạy luôn
     )
     # Start scheduler
     scheduler.start()
