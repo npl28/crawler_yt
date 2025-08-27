@@ -369,19 +369,20 @@ def worker(gpu_id, tasks):
     for post_id, audio_file in tasks:
         logging.info(f"[GPU {gpu_id}] Đang xử lý {audio_file}")
         try:
-            result = model.transcribe(str(audio_file))
+            result = model.transcribe(str(audio_file), language="vi")
             text = result["text"]
 
             # Lưu kết quả ra file txt (hoặc update DB)
-            out_file = Path(audio_file).with_suffix(".txt")
-            with open(out_file, "w", encoding="utf-8") as f:
-                f.write(text)
+            # out_file = Path(audio_file).with_suffix(".txt")
+            # with open(out_file, "w", encoding="utf-8") as f:
+            #     f.write(text)
+            if text.strip() == "":
+                logging.error("❌ Không thể nhận diện nội dung video.")
+                return
 
-            logging.info(f"[GPU {gpu_id}] ✅ Xong {post_id}, lưu {out_file}")
-
-            # TODO: update DB post_processed = true
-            # update_post_processed(post_id)
-
+            if db.update_yt_post_content(id, text):
+                logging.info(f"[GPU {gpu_id}] ✅ Xong {post_id}")
+            
         except Exception as e:
             logging.error(f"[GPU {gpu_id}] ❌ Lỗi {post_id}: {e}")
 
@@ -514,7 +515,7 @@ if __name__ == "__main__":
         id="process_job",
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
-        misfire_grace_time=1    # nếu lỡ giờ thì bỏ qua
+        misfire_grace_time=1,    # nếu lỡ giờ thì bỏ qua
         next_run_time=datetime.now() #cho chạy luôn
     )
     # Start scheduler
