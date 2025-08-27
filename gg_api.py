@@ -383,6 +383,12 @@ def worker(gpu_id, tasks):
             if db.update_yt_post_content(id, text):
                 logging.info(f"[GPU {gpu_id}] ✅ Xong {post_id}")
             
+            try:
+                os.remove(audio_file)
+            except Exception as e:
+                logging.warning(f"⚠️ Không thể xóa file audio: {audio_file}. Lỗi: {e}")
+
+            
         except Exception as e:
             logging.error(f"[GPU {gpu_id}] ❌ Lỗi {post_id}: {e}")
 
