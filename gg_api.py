@@ -380,7 +380,7 @@ def worker(gpu_id, tasks):
                 logging.error("❌ Không thể nhận diện nội dung video.")
                 return
 
-            if db.update_yt_post_content(id, text):
+            if db.update_yt_post_content(post_id, text):
                 logging.info(f"[GPU {gpu_id}] ✅ Xong {post_id}")
             
             try:
