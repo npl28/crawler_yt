@@ -43,49 +43,58 @@ logging.basicConfig(
 # ===== B1: Lấy video mới nhất từ kênh =====
 def get_latest_video(channel_id):
     youtube = build("youtube", "v3", developerKey=API_KEY)
-    
-    # Chỉ được dùng snippet ở đây
-    request = youtube.search().list(
-        part="snippet",
+
+    # Lấy activity mới nhất (tốn 1 unit)
+    request = youtube.activities().list(
+        part="snippet,contentDetails",
         channelId=channel_id,
-        order="date",
-        maxResults=5,
-        type="video",
-        videoDuration="any"
+        maxResults=5
     )
     response = request.execute()
     videos = []
 
     for item in response.get("items", []):
-        video_id = item["id"]["videoId"]
+        # Chỉ lấy activity dạng upload video
+        if "upload" not in item.get("contentDetails", {}):
+            continue
 
-        # Gọi videos().list để lấy contentDetails
+        video_id = item["contentDetails"]["upload"]["videoId"]
+
+        # Gọi videos().list để lấy chi tiết video
         video_request = youtube.videos().list(
             part="contentDetails,snippet,status",
             id=video_id
         )
         video_response = video_request.execute()
 
-        if video_response["items"]:
-            details = video_response["items"][0]
-            duration = details["contentDetails"]["duration"]
-            seconds = isodate.parse_duration(duration).total_seconds()
+        if not video_response["items"]:
+            continue
 
-            # kiểm tra video đã publish hay chưa
-            upload_status = details["status"].get("uploadStatus", "unknown")
-            privacy_status = details["status"].get("privacyStatus", "unknown")
+        details = video_response["items"][0]
+        duration = details["contentDetails"]["duration"]
+        seconds = isodate.parse_duration(duration).total_seconds()
 
-            if seconds > 60 and upload_status == "processed" and privacy_status == "public":
-                published_at_str = details['snippet']['publishedAt']
-                published_at_dt = datetime.strptime(published_at_str, "%Y-%m-%dT%H:%M:%SZ")
-                logging.info(f"✅ Video hợp lệ: {item['snippet']['title']} ({seconds} giây), đăng lúc {published_at_dt}")
-                videos.append({
-                    "video_id": video_id,
-                    "title": details["snippet"]["title"],
-                    "url": f"https://www.youtube.com/watch?v={video_id}",
-                    "published_at": f"{published_at_dt}"
-                })
+        # Kiểm tra trạng thái upload + quyền riêng tư
+        upload_status = details["status"].get("uploadStatus", "unknown")
+        privacy_status = details["status"].get("privacyStatus", "unknown")
 
+        if seconds > 60 and upload_status == "processed" and privacy_status == "public":
+            published_at_str = details['snippet']['publishedAt']
+            published_at_dt = datetime.strptime(published_at_str, "%Y-%m-%dT%H:%M:%SZ")
+
+            logging.info(
+                f"✅ Video hợp lệ: {details['snippet']['title']} "
+                f"({seconds} giây), đăng lúc {published_at_dt}"
+            )
+
+            videos.append({
+                "video_id": video_id,
+                "title": details["snippet"]["title"],
+                "url": f"https://www.youtube.com/watch?v={video_id}",
+                "published_at": f"{published_at_dt}"
+            })
+
+    # Trả về video mới nhất
     return videos[0] if videos else None
 
 
@@ -507,11 +516,12 @@ if __name__ == "__main__":
     scheduler.add_job(
         fetch_and_download_audio,
         "cron",
-        hour="0,4,6,8,10,12,14,16,18,20,22",
+        hour="0,4,6,8,18,20,22",
         id="fetch_job",
         max_instances=1,
         coalesce=True,
-        misfire_grace_time=1
+        misfire_grace_time=1,
+        next_run_time=datetime.now() #cho chạy luôn
     )
     # Job 2: mỗi giờ
     scheduler.add_job(
@@ -522,7 +532,7 @@ if __name__ == "__main__":
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
         misfire_grace_time=1,    # nếu lỡ giờ thì bỏ qua
-        next_run_time=datetime.now() #cho chạy luôn
+        # next_run_time=datetime.now() #cho chạy luôn
     )
     # Start scheduler
     scheduler.start()
