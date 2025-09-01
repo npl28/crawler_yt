@@ -16,6 +16,8 @@ import argparse
 import tiktok_whisper_latest as tiktok
 import random
 from multiprocessing import Process
+import sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # ===== CẤU HÌNH =====
 API_KEY = ""   # 🔑 thay bằng API key YouTube Data v3
@@ -117,28 +119,55 @@ def get_latest_video(channel_id):
 #         if downloaded_file != filename:
 #             os.rename(downloaded_file, filename)
 #         return filename
+
 def download_audio(video_url, dir, video_id):
-    # Đường dẫn file đích (luôn .mp3)
     output_path = os.path.join(dir, f"{video_id}.%(ext)s")
 
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'outtmpl': output_path,
-        'quiet': True,
-        'no_warnings': True,
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-    }
+    # Danh sách format fallback
+    format_list = [
+        "bestaudio/best",          
+        "bestaudio[ext=m4a]/best", 
+        "bestaudio[ext=webm]/best"
+    ]
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(video_url, download=True)
+    for fmt in format_list:
+        try:
+            ydl_opts = {
+                "format": fmt,
+                "outtmpl": output_path,
+                "quiet": True,
+                "no_warnings": True,
+                "postprocessors": [{
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }],
+            }
 
-    # Sau postprocess, file chắc chắn là .mp3
-    final_file = os.path.join(dir, f"{video_id}.mp3")
-    return final_file
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(video_url, download=True)
+
+                # Kiểm tra livestream hoặc chưa có audio
+                if info.get("is_live"):
+                    logging.warning(f"⏩ Bỏ qua video livestream: {video_id}")
+                    return None
+                if info.get("was_live"):
+                    logging.warning(f"⏩ Video từng livestream, có thể chưa xử lý xong: {video_id}")
+                    return None
+
+            final_file = os.path.join(dir, f"{video_id}.mp3")
+
+            if os.path.exists(final_file):
+                logging.info(f"✅ Tải audio thành công ({fmt}) -> {final_file}")
+                return final_file
+
+        except Exception as e:
+            logging.warning(f"⚠️ Lỗi với format {fmt}: {e}")
+            continue
+
+    # Nếu tất cả đều fail
+    logging.error(f"❌ Không thể tải audio cho {video_url}")
+    return None
 
 def transcribe_audio(file_path):
     logging.info("⏳ Đang load mô hình Whisper...")
