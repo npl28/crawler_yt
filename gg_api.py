@@ -16,6 +16,7 @@ import argparse
 import tiktok_whisper_latest as tiktok
 import random
 from multiprocessing import Process
+from multiprocessing import freeze_support
 import sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
@@ -537,11 +538,10 @@ def fectch_download_audio_tiktok():
         time.sleep(random.randint(5,15))
 
                    
-if __name__ == "__main__":
-    # process_audio_job()  # Lấy video mới nhất và tải audio
+def main():
     scheduler = BackgroundScheduler()
 
-    # Job 1: mỗi 4 giờ (0, 4, 8, 12, 16, 20)
+    # Job 1: chạy theo giờ định trước + chạy ngay lúc start
     scheduler.add_job(
         fetch_and_download_audio,
         "cron",
@@ -550,9 +550,11 @@ if __name__ == "__main__":
         max_instances=1,
         coalesce=True,
         misfire_grace_time=1,
-        next_run_time=datetime.now() #cho chạy luôn
+        # next_run_time=datetime.now()   # chạy ngay khi start
+        # next_run_time=(datetime.now() + timedelta(seconds=30))  # chạy sau 30 giây kể từ lúc start
     )
-    # Job 2: mỗi giờ
+
+    # Job 2: chạy mỗi giờ
     scheduler.add_job(
         process_audio_job,
         "interval",
@@ -560,12 +562,12 @@ if __name__ == "__main__":
         id="process_job",
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
-        misfire_grace_time=1,    # nếu lỡ giờ thì bỏ qua
-        # next_run_time=datetime.now() #cho chạy luôn
+        misfire_grace_time=1,
+        next_run_time=datetime.now()  # uncomment nếu muốn chạy ngay
     )
+
     # Start scheduler
     scheduler.start()
-
     print("✅ Scheduler đã khởi động. Nhấn Ctrl+C để dừng.")
 
     try:
@@ -574,6 +576,8 @@ if __name__ == "__main__":
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
         print("🛑 Scheduler đã dừng.")
-# pyinstaller --onefile --add-data "C:\Users\PC\AppData\Local\Programs\Python\Python311\Lib\site-packages\whisper\assets;whisper/assets" gg_api.py
-# pyinstaller --onefile --exclude-module torch --exclude-module torchvision --exclude-module torchaudio --add-data "C:\Users\PC\AppData\Local\Programs\Python\Python311\Lib\site-packages\whisper\assets;whisper/assets" gg_api.py
 
+# Chỉ chạy khi thực sự chạy file này
+if __name__ == "__main__":
+    freeze_support()   # rất quan trọng cho Windows khi build exe
+    main()
