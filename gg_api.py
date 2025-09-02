@@ -46,41 +46,40 @@ logging.basicConfig(
 def get_latest_video(channel_id):
     youtube = build("youtube", "v3", developerKey=API_KEY)
 
-    # Lấy activity mới nhất (tốn 1 unit)
+    # Lấy activity mới nhất (1 unit)
     request = youtube.activities().list(
         part="snippet,contentDetails",
         channelId=channel_id,
         maxResults=5
     )
     response = request.execute()
+
+    # Lọc ra videoId từ các activity dạng upload
+    video_ids = [
+        item["contentDetails"]["upload"]["videoId"]
+        for item in response.get("items", [])
+        if "upload" in item.get("contentDetails", {})
+    ]
+
+    if not video_ids:
+        return None
+
+    # Gọi videos().list 1 lần cho tất cả videoId
+    video_request = youtube.videos().list(
+        part="contentDetails,snippet,status",
+        id=",".join(video_ids)
+    )
+    video_response = video_request.execute()
+
     videos = []
-
-    for item in response.get("items", []):
-        # Chỉ lấy activity dạng upload video
-        if "upload" not in item.get("contentDetails", {}):
-            continue
-
-        video_id = item["contentDetails"]["upload"]["videoId"]
-
-        # Gọi videos().list để lấy chi tiết video
-        video_request = youtube.videos().list(
-            part="contentDetails,snippet,status",
-            id=video_id
-        )
-        video_response = video_request.execute()
-
-        if not video_response["items"]:
-            continue
-
-        details = video_response["items"][0]
+    for details in video_response.get("items", []):
         duration = details["contentDetails"]["duration"]
         seconds = isodate.parse_duration(duration).total_seconds()
 
-        # Kiểm tra trạng thái upload + quyền riêng tư
         upload_status = details["status"].get("uploadStatus", "unknown")
         privacy_status = details["status"].get("privacyStatus", "unknown")
 
-        if seconds > 60 and upload_status == "processed" and privacy_status == "public":
+        if seconds > 30 and upload_status == "processed" and privacy_status == "public":
             published_at_str = details['snippet']['publishedAt']
             published_at_dt = datetime.strptime(published_at_str, "%Y-%m-%dT%H:%M:%SZ")
 
@@ -90,13 +89,14 @@ def get_latest_video(channel_id):
             )
 
             videos.append({
-                "video_id": video_id,
+                "video_id": details["id"],
                 "title": details["snippet"]["title"],
-                "url": f"https://www.youtube.com/watch?v={video_id}",
+                "url": f"https://www.youtube.com/watch?v={details['id']}",
                 "published_at": f"{published_at_dt}"
             })
 
-    # Trả về video mới nhất
+    # Trả về video mới nhất (theo published_at)
+    videos.sort(key=lambda v: v["published_at"], reverse=True)
     return videos[0] if videos else None
 
 
