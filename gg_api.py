@@ -310,7 +310,7 @@ def process_audio_file(id, audio_path):
     # else:
     #     logging.error("❌ Nội dung video đã tồn tại trong cơ sở dữ liệu.")
 
-def fetch_and_download_audio():
+def fetch_and_download_audio(sche):
     logging.info("🔍 Đang tìm video mới nhất...")
     conn = db.get_connection()
     if conn is None:
@@ -347,7 +347,7 @@ def fetch_and_download_audio():
         time.sleep(random.randint(5,15))
     # Sau khi xong thì add Job get last tiktok video ngay
     print("➡️ Job1 hoàn tất, thêm Job get last tiktok video vào lịch")
-    scheduler.add_job(
+    sche.add_job(
         fectch_download_audio_tiktok,
         "date",   # chỉ chạy 1 lần
         run_date=datetime.now(),  # chạy ngay lập tức
@@ -543,7 +543,7 @@ def main():
 
     # Job 1: chạy theo giờ định trước + chạy ngay lúc start
     scheduler.add_job(
-        fetch_and_download_audio,
+        fetch_and_download_audio(scheduler),
         "cron",
         hour="0,4,6,8,18,20,22",
         id="fetch_job",
