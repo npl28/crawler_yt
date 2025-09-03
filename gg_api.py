@@ -151,10 +151,10 @@ def download_audio(video_url, dir, video_id):
                 # Kiểm tra livestream hoặc chưa có audio
                 if info.get("is_live"):
                     logging.warning(f"⏩ Bỏ qua video livestream: {video_id}")
-                    return None
+                    # return None
                 if info.get("was_live"):
                     logging.warning(f"⏩ Video từng livestream, có thể chưa xử lý xong: {video_id}")
-                    return None
+                    # return None
 
             final_file = os.path.join(dir, f"{video_id}.mp3")
 
@@ -265,7 +265,7 @@ def transcribe_audio(file_path):
 
 def download_and_save_audio(video_url, audio_dir, video_id):
     logging.info("✅ Video chưa tồn tại trong cơ sở dữ liệu, bắt đầu tải audio...")
-    logging.info("⬇️ Đang tải audio (mp3)...")
+    logging.info(f"⬇️ Đang tải audio {video_url} (mp3)...")
     try:
         audio_file = download_audio(video_url, audio_dir, video_id)
         logging.info(f"✅ Đã tải: {audio_file}")
@@ -340,10 +340,12 @@ def fetch_and_download_audio(sche):
         video_id = f"{id}_{latest['video_id']}"
         audio_file = download_and_save_audio(latest['url'], AUDIO_DIR, video_id)
         if audio_file:
-            logging.info(f"💾 Đã lưu audio: {audio_file}")
+            logging.info(f"💾 Lưu audio: {audio_file}")
             # Ghi metadata vào DB để Job 2 xử lý
             if db.insert_yt_post(video_id, latest['title'], latest['url'], "", latest['published_at']):
                 logging.info("✅ Đã lưu metadata video vào cơ sở dữ liệu.")
+        else:
+            logging.info("❌ Lỗi audio_file")
         time.sleep(random.randint(5,15))
     # Sau khi xong thì add Job get last tiktok video ngay
     print("➡️ Job1 hoàn tất, thêm Job get last tiktok video vào lịch")
@@ -543,15 +545,17 @@ def main():
 
     # Job 1: chạy theo giờ định trước + chạy ngay lúc start
     scheduler.add_job(
-        fetch_and_download_audio(scheduler),
+        fetch_and_download_audio,
         "cron",
         hour="0,4,6,8,18,20,22",
         id="fetch_job",
         max_instances=1,
         coalesce=True,
         misfire_grace_time=1,
+        args=[scheduler],   # 👈 truyền scheduler vào
         # next_run_time=datetime.now()   # chạy ngay khi start
         # next_run_time=(datetime.now() + timedelta(seconds=30))  # chạy sau 30 giây kể từ lúc start
+        
     )
 
     # Job 2: chạy mỗi giờ

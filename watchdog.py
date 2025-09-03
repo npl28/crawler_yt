@@ -5,7 +5,7 @@ import logging
 
 # ----------------- CẤU HÌNH -----------------
 CRAWLERS = [
-    r"C:\CrawlerEXE\yt_tiktok\crawler_yt\dist\gg_api.exe",
+    r"C:\CrawlerEXE\yt_tiktok\crawler_yt\gg_api.exe",
     r"C:\CrawlerEXE\fb\main_bot_schedule.exe"
 ]
 
@@ -49,18 +49,18 @@ def monitor():
     while True:
         now = datetime.datetime.now()
 
-        # 1. Kiểm tra đến giờ reset
-        if (now.hour == RESET_HOUR and now.minute == RESET_MINUTE 
-            and last_reset_date != now.date()):
-            logging.info(f"[RESET] {now} - Reset toàn bộ crawler...")
-            stop_all()
-            last_reset_date = now.date()
-            RESET_FLAG = True
+        # # 1. Kiểm tra đến giờ reset
+        # if (now.hour == RESET_HOUR and now.minute == RESET_MINUTE 
+        #     and last_reset_date != now.date()):
+        #     logging.info(f"[RESET] {now} - Reset toàn bộ crawler...")
+        #     stop_all()
+        #     last_reset_date = now.date()
+        #     RESET_FLAG = True
 
-        if RESET_FLAG:
-            logging.info(f"[RESET] {now} - Reset cờ RESET_FLAG waiting 2000s...")
-            time.sleep(2000)
-            RESET_FLAG = False
+        # if RESET_FLAG:
+        #     logging.info(f"[RESET] {now} - Reset cờ RESET_FLAG waiting 2000s...")
+        #     time.sleep(2000)
+        #     RESET_FLAG = False
 
         # 2. Giám sát process
         for path in CRAWLERS:

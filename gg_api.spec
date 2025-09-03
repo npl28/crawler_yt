@@ -5,7 +5,7 @@ a = Analysis(
     ['gg_api.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\PC\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\whisper\\assets', 'whisper/assets')],
+    datas=[('C:/Users/AIM/AppData/Local/Programs/Python/Python310/Lib/site-packages/whisper/assets/*', 'whisper/assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
