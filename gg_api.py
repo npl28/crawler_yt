@@ -509,7 +509,7 @@ def fectch_download_audio_tiktok():
         )
 
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Lấy video mới nhất của @{args.username} ...")
-        latest_entry = tiktok.get_latest_tiktok_video_entry(args.username)
+        latest_entry = tiktok.get_latest_tiktok_video(args.username)
 
         # Cố gắng lấy URL video.
         video_url = latest_entry.get("url") or latest_entry.get("webpage_url") or latest_entry.get("original_url")
