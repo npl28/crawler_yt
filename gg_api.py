@@ -5,7 +5,7 @@ import whisper
 import isodate
 import logging
 import torch
-from datetime import datetime
+from datetime import datetime, timedelta
 import threading
 import db.db_adapter as db
 from multiprocessing import Pool, cpu_count
@@ -553,7 +553,7 @@ def main():
         coalesce=True,
         misfire_grace_time=1,
         args=[scheduler],   # 👈 truyền scheduler vào
-        # next_run_time=datetime.now()   # chạy ngay khi start
+        next_run_time=datetime.now()   # chạy ngay khi start
         # next_run_time=(datetime.now() + timedelta(seconds=30))  # chạy sau 30 giây kể từ lúc start
         
     )
@@ -567,7 +567,8 @@ def main():
         max_instances=1,        # chỉ cho phép 1 job chạy
         coalesce=True,          # không chạy bù nếu lỡ
         misfire_grace_time=1,
-        next_run_time=datetime.now()  # uncomment nếu muốn chạy ngay
+        # next_run_time=datetime.now()  # uncomment nếu muốn chạy ngay
+        next_run_time=(datetime.now() + timedelta(seconds=30))  # chạy sau 30 giây kể từ lúc start
     )
 
     # Start scheduler

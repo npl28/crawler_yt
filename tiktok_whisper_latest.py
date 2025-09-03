@@ -12,11 +12,11 @@ from whisper.utils import get_writer
 from db import db_adapter as db
 import logging
 
-
+from typing import Dict, Any, List
 
 
 # def get_latest_tiktok_video_entry(username: str) -> Dict[str, Any]:
-#     print(f"[TikTok] Lấy video mới nhất của @{username} ...")
+#     logging.info(f"[TikTok] Lấy video mới nhất của @{username} ...")
 #     logging.info(f"get latest TikTok video for user: {username} start")
 #     """
 #     Lấy metadata video mới nhất từ profile TikTok của @username bằng yt-dlp (extract_flat).
@@ -48,12 +48,42 @@ import logging
 
 #     latest = max(entries, key=entry_ts)
 #     return latest
-
-def get_latest_tiktok_video_entry(username: str) -> Dict[str, Any]:
-    print(f"[TikTok] Lấy video mới nhất của @{username} ...")
-    logging.info(f"get latest TikTok video for user: {username} start")
+def resolve_tiktok_channel(username: str) -> str:
+    """
+    Trả về channel_id dưới dạng 'tiktokuser:<id>'
+    Nếu username đã là 'tiktokuser:...' thì giữ nguyên
+    """
+    if username.startswith("tiktokuser:"):
+        return username
 
     profile_url = f"https://www.tiktok.com/@{username}"
+    ydl_opts = {
+        "quiet": True,
+        "extract_flat": "first",
+        "skip_download": True,
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(profile_url, download=False)
+        if "entries" in info and len(info["entries"]) > 0:
+            first_entry = info["entries"][0]
+            channel_id = first_entry.get("channel_id")
+            if channel_id:
+                return f"tiktokuser:{channel_id}"
+
+    raise RuntimeError(f"❌ Không lấy được channel_id cho {username}")
+
+
+def get_latest_tiktok_video_entry(username: str) -> Dict[str, Any]:
+    """
+    Lấy video mới nhất từ TikTok user
+    """
+    # Resolve username thành channel_id
+    resolved = resolve_tiktok_channel(username)
+
+    logging.info(f"get latest TikTok video for user: {username} ({resolved}) start")
+    logging.info(f"[TikTok] Lấy video mới nhất của {resolved} ...")
+
     ydl_opts = {
         "quiet": True,
         "extract_flat": True,
@@ -61,21 +91,15 @@ def get_latest_tiktok_video_entry(username: str) -> Dict[str, Any]:
         "nocheckcertificate": True,
         "noplaylist": False,
         "simulate": True,
-        "force_generic_extractor": True,  # ép parser đơn giản
+        "cookies": "cookies.txt",
+        "playlistend": 10,
     }
-
-    # with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-    #     info = ydl.extract_info(profile_url, download=False)
-
-    
-    # ydl_opts["cookiefile"] = "cookies.txt"
-    ydl_opts["playlistend"] = 10  # chỉ lấy tối đa 10 video
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         try:
-            info = ydl.extract_info(profile_url, download=False)
+            info = ydl.extract_info(resolved, download=False)
         except Exception as e:
-            logging.error(f"❌ Lỗi khi extract_info TikTok profile {username}: {e}")
+            logging.error(f"❌ Lỗi extract_info TikTok {resolved}: {e}")
             raise RuntimeError(f"Lỗi extract_info TikTok: {e}")
 
     entries: List[Dict[str, Any]] = info.get("entries", []) if isinstance(info, dict) else []
@@ -94,7 +118,6 @@ def get_latest_tiktok_video_entry(username: str) -> Dict[str, Any]:
         "url": latest.get("url") or latest.get("webpage_url"),
         "timestamp": latest.get("timestamp"),
     }
-
 
 def download_best_audio(video_url: str, outdir: str, vid_id: str) -> str:
     # os.makedirs(outdir, exist_ok=True)
@@ -140,7 +163,7 @@ def transcribe_with_whisper(audio_path: str, model_size: str = "medium", languag
     os.makedirs(outdir, exist_ok=True)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"[Whisper] Loading model={model_size} on device={device} ...")
+    logging.info(f"[Whisper] Loading model={model_size} on device={device} ...")
     model = whisper.load_model(model_size, device=device)
 
     # Bạn có thể thêm options như fp16 nếu GPU hỗ trợ
@@ -148,7 +171,7 @@ def transcribe_with_whisper(audio_path: str, model_size: str = "medium", languag
     if language:
         transcribe_kwargs["language"] = language
 
-    print(f"[Whisper] Transcribing {language}...")
+    logging.info(f"[Whisper] Transcribing {language}...")
     result = model.transcribe(audio_path, **transcribe_kwargs)
 
     base = os.path.splitext(os.path.basename(audio_path))[0]
@@ -199,47 +222,48 @@ def main():
             outdir=outdir,
             transdir=transdir
         )
+        try:
+            logging.info(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Lấy video mới nhất của @{args.username} ...")
+            latest_entry = get_latest_tiktok_video_entry(args.username)
 
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Lấy video mới nhất của @{args.username} ...")
-        latest_entry = get_latest_tiktok_video_entry(args.username)
+            # Cố gắng lấy URL video.
+            video_url = latest_entry.get("url") or latest_entry.get("webpage_url") or latest_entry.get("original_url")
+            if not video_url:
+                # Trong extract_flat, TikTok đôi khi trả về 'id' thay vì URL đầy đủ
+                vid_id = latest_entry.get("id")
+                if vid_id:
+                    video_url = f"https://www.tiktok.com/@{args.username}/video/{vid_id}"
+                else:
+                    raise RuntimeError("Không xác định được URL video mới nhất.")
 
-        # Cố gắng lấy URL video.
-        video_url = latest_entry.get("url") or latest_entry.get("webpage_url") or latest_entry.get("original_url")
-        if not video_url:
-            # Trong extract_flat, TikTok đôi khi trả về 'id' thay vì URL đầy đủ
-            vid_id = latest_entry.get("id")
-            if vid_id:
-                video_url = f"https://www.tiktok.com/@{args.username}/video/{vid_id}"
-            else:
-                raise RuntimeError("Không xác định được URL video mới nhất.")
+            ts = latest_entry.get("timestamp")
+            ts_str = datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S") if ts else "N/A"
+            logging.info(f"Video mới nhất: {video_url}\nThời gian đăng: {ts_str}")
 
-        ts = latest_entry.get("timestamp")
-        ts_str = datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S") if ts else "N/A"
-        print(f"Video mới nhất: {video_url}\nThời gian đăng: {ts_str}")
+            if not db.validate_yt_post(latest_entry['title'], video_url):
+                logging.info("⚠️ Đã tồn tại trong DB, bỏ qua.")
+                continue
 
-        if not db.validate_yt_post(latest_entry['title'], video_url):
-            print("⚠️ Đã tồn tại trong DB, bỏ qua.")
-            continue
+            logging.info(f"\n[Tải audio bằng yt-dlp] ... {video_url}")
+            video_id = f"t_{args.username}_{video_url.rstrip('/').split('/')[-1]}"
+            audio_path = download_best_audio(video_url, outdir=args.outdir, vid_id=video_id)
+            logging.info(f"Đã tải audio: {audio_path}")
 
-        print(f"\n[Tải audio bằng yt-dlp] ... {video_url}")
-        video_id = f"t_{args.username}_{video_url.rstrip('/').split('/')[-1]}"
-        audio_path = download_best_audio(video_url, outdir=args.outdir, vid_id=video_id)
-        print(f"Đã tải audio: {audio_path}")
-
-        if audio_path:
-            # Ghi metadata vào DB để Job 2 xử lý
-            print(f"✅ Chuẩn bị lưu metadata video vào cơ sở dữ liệu title: {latest_entry['title']}, url: {video_url}, timestamp: {ts_str}")
-            if db.insert_yt_post(video_id, latest_entry['title'], video_url, "", ts_str):
-                print(f"✅ Đã lưu metadata video vào cơ sở dữ liệu title: {latest_entry['title']}, url: {video_url}, timestamp: {ts_str}")
-
-        # print(f"\n[Transcribe bằng Whisper] ... {audio_path}")
+            if audio_path:
+                # Ghi metadata vào DB để Job 2 xử lý
+                logging.info(f"✅ Chuẩn bị lưu metadata video vào cơ sở dữ liệu title: {latest_entry['title']}, url: {video_url}, timestamp: {ts_str}")
+                if db.insert_yt_post(video_id, latest_entry['title'], video_url, "", ts_str):
+                    logging.info(f"✅ Đã lưu metadata video vào cơ sở dữ liệu title: {latest_entry['title']}, url: {video_url}, timestamp: {ts_str}")
+        except Exception as e:
+            logging.error(f"⚠️ Lỗi e: {e}")
+        # logging.info(f"\n[Transcribe bằng Whisper] ... {audio_path}")
         # outputs = transcribe_with_whisper(audio_path, model_size=args.model, language=args.lang, outdir=args.transdir)
-        # print(f"Đã transcribe audio")
+        # logging.info(f"Đã transcribe audio")
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print(f"❌ Lỗi: {e}", file=sys.stderr)
+        logging.info(f"❌ Lỗi: {e}", file=sys.stderr)
         sys.exit(1)
